@@ -29,11 +29,11 @@
 								<form:content>
 									<core:Title text="Dodací list" id="__title1"/>
 									<Label text="Číslo/Datum" id="__label17"/>
-									<Input width="100%" id="__input5" value="30000077 / 18.05.2016"/>
+									<Input width="100%" id="__input5" value="30000077 / 18.05.2016" editable="false"/>
 									<Label text="Číslo zakázky" id="__label18"/>
-									<Input width="100%" id="__input7" value="55000156"/>
+									<Input width="100%" id="__input7" value="55000156" editable="false"/>
 									<Label text="Zákazník" width="100%" id="__label15"/>
-									<Input width="100%" id="__input2" value="300013"/></form:content>
+									<Input width="100%" id="__input2" value="300013" editable="false"/></form:content>
 							</form:SimpleForm>
 								<form:SimpleForm visible="false" editable="true" layout="ResponsiveGridLayout" id="__form4">
 							    <form:content>
@@ -171,7 +171,7 @@
 											<Text text="10 Ks" maxLines="0" id="__text018"/>
 											<Text text="15000 Kč" maxLines="0" id="__text023"/>
 											<Input width="100%" id="__input1" type="Number" valueLiveUpdate="true" liveChange="onInputCount050"/>
-											<Text text="" maxLines="0" id="__text26"/></cells>
+											<Text text="0" maxLines="0" id="__text26"/></cells>
 									</ColumnListItem>
 									<ColumnListItem counter="0" id="__item021">
 										<cells>
@@ -180,7 +180,7 @@
 											<Text text="10 Ks" maxLines="0" id="__text021"/>
 											<Text text="10000 Kč" maxLines="0" id="__text024"/>
 											<Input width="100%" id="__input3" type="Number" valueLiveUpdate="true" liveChange="onInputCount030"/>
-											<Text text="" maxLines="0" id="__text27"/></cells>
+											<Text text="0" maxLines="0" id="__text27"/></cells>
 									</ColumnListItem>
 									<ColumnListItem counter="0" id="__item17">
 									    <cells>
@@ -189,7 +189,7 @@
 									        <Text maxLines="0" id="__text14"/>
 									        <core:InvisibleText text="InvisibleText" id="__text15"/>
 									        <core:InvisibleText text="InvisibleText" id="__text25"/>
-									        <Text maxLines="0" id="__text28" />
+									        <Text maxLines="0" id="__text28"/>
 									    </cells>
 									</ColumnListItem>
 								</items>

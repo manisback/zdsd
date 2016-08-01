@@ -5,8 +5,11 @@ sap.ui.define([
 	"zdsd/heineken01/model/formatter",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
-	"jquery.sap.global"
-], function(BaseController, JSONModel, formatter, MessageToast, MessageBox, jQuery) {
+	"jquery.sap.global",
+	"sap/m/Dialog",
+	"sap/m/Button"
+	
+], function(BaseController, JSONModel, formatter, MessageToast, MessageBox, jQuery, Dialog, Button) {
 	"use strict";
 
 	return BaseController.extend("zdsd.heineken01.controller.Detail", {
@@ -21,6 +24,12 @@ sap.ui.define([
 			// Model used to manipulate control states. The chosen values make sure,
 			// detail page is busy indication immediately so there is no break in
 			// between the busy indication for loading the view's meta data
+			
+			var pq = jQuery.sap.getModulePath("zdsd.heineken01");
+			sap.ui.getCore().loadLibrary("extlibrary", pq + "/extlibrary/");
+			sap.ui.getCore().loadLibrary("SignaturePad", pq + "/SignaturePad/");
+			
+			
 			var oViewModel = new JSONModel({
 				busy: false,
 				delay: 0,
@@ -177,8 +186,11 @@ sap.ui.define([
 				actions: [MessageBox.Action.YES, MessageBox.Action.NO],
 				onClose: function (oAction) {
 					if (oAction === MessageBox.Action.YES) {
-						that._handleNavigationToStep(0);
-						that._wizard.discardProgress(that._wizard.getSteps()[0]);
+						
+						// that._handleNavigationToStep(0);
+						// that._wizard.discardProgress(that._wizard.getSteps()[0]);
+						
+						that._oNavContainer.to(that._oVycetkaPage);
 					}
 				},
 			});
@@ -190,7 +202,7 @@ sap.ui.define([
 			this._handleMessageBoxOpen("Neprovedl jste všechny potřebné kroky! Přejete si přesto ukončit tuto návštěvu?", "warning");
 		},
 		handleWizardSubmit : function () {
-			this._handleMessageBoxOpen("Přejete si přejít k výčetce?", "confirm");
+			this._handleMessageBoxOpen("Přejete si odeslat částku Suma na portál finanční správy?", "confirm");
 		},
 		productWeighStateFormatter: function (val) {
 			return isNaN(val) ? "Error" : "None";
@@ -225,6 +237,70 @@ sap.ui.define([
 		 * Event handler when the share by E-Mail button has been clicked
 		 * @public
 		 */
+		 onTisk: function(){
+		 		MessageToast.show(
+				"Účtenka byla odeslána na tiskárnu."
+			);
+		 },
+		 onGetSignature: function() {
+			
+			var that = this;
+			// var oMySign = new mySignPad("sPad1", {});
+			
+			 var dialog = new Dialog({
+				title: 'Podpis',
+				type: 'Message',
+				content: new mySignPad("sPad1", {
+					
+				}),
+			
+				beginButton: new Button({
+					text: 'Potvrdit',
+					press: function(oEvent) {
+						
+						var	sURL = sap.ui.getCore().getControl("sPad1").save();
+						 var oImage = sap.ui.getCore().getControl("__image0vycet");
+						 oImage.setVisible(true);
+						 oImage.setSrc(sURL);
+						
+						dialog.setProperty("title","ok");
+						// MessageToast.show('Dotazník byl odeslán');
+						dialog.close();
+
+					}
+				}),
+
+				endButton: new Button({
+					text: 'Zrušit',
+					press: function() {
+						
+						dialog.close();
+					}
+				}),
+
+				afterClose: function(oEvent) {
+					dialog.destroy();
+					
+					// var oOrigin = oEvent.getParameters().origin;
+					// var sText = oOrigin.getText();
+					// var sProper = dialog.getProperty("title");
+					
+					// if (sProper === "ok") {
+						
+					// var	sURL = that.byId("sPad1").save();
+					// var oImage = that.byId("__image0vycet");
+					// 	oImage.setVisible(true);
+					// 	oImage.setSrc(sURL);
+					// }
+
+				}
+			});
+			dialog.open();
+			
+		},
+		 
+		 
+		 
 		onShareEmailPress: function() {
 			var oViewModel = this.getModel("detailView");
 
@@ -390,18 +466,18 @@ sap.ui.define([
 			var sInput4 = oVyčetka.getFormElements()[3].getFields()[0].getProperty("value");
 			var sInputCelk4 = 500 * Number(sInput4); 
 			
-			var sCelkem = sInputCelk1 + sInputCelk2 + sInputCelk3 + sInputCelk4;
+			var sCelkem1 = sInputCelk1 + sInputCelk2 + sInputCelk3 + sInputCelk4;
+			
+			var oCelkplatba = this._oWizardReviewPage.getContent()[3].getAggregation("form").getAggregation("formContainers")[0];		
+			var oFieldCelkPlatba = oCelkplatba.getFormElements()[0].getFields()[0];
+			var sSuma1 = oFieldCelkPlatba.getProperty("text");
+			var	sSuma2  = sSuma1.split("K");
+			var sSuma = Number(sSuma2[0]); 
+		
+			var sCelkem = sSuma - sCelkem1;
 			var sInput = oVyčetka.getFormElements()[4].getFields()[0].setProperty("text",sCelkem);
 			
-				if (sParameter === "__input5000") {
-					   
-				} else if (sParameter === "__input2000") {
-					
-				} else if (sParameter === "__input1000") {
-					
-				} else if (sParameter === "__input500") {
-					
-				}
+			
 		},
  
 		_createDeliverTable: function(){

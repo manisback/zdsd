@@ -38,7 +38,7 @@
 					</form:content>
 				</form:SimpleForm>
 
-				<form:SimpleForm editable="false" layout="ResponsiveGridLayout" id="__form3" title="4. Celková suma k zaplacení">
+				<form:SimpleForm editable="false" layout="ResponsiveGridLayout" id="formcelsum" title="4. Celková suma k zaplacení">
 
 				    <form:content>
 
@@ -48,7 +48,7 @@
 
 				</form:SimpleForm>
 
-				<form:SimpleForm editable="false" layout="ResponsiveGridLayout" id="__form4" title="5. Výčetka">
+				<form:SimpleForm editable="false" layout="ResponsiveGridLayout" id="formvycetka" title="5. Výčetka">
 
 				    <form:content>
 
